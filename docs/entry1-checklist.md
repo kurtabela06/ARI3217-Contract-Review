@@ -4,15 +4,14 @@ Deadline: 23 November 2026.
 Check the exact submission time on the VLE.
 
 ## Administration
-- [ ] Task 29 recorded on the allocation sheet.
-- [ ] Task 29 announced in the VLE forum.
-- [ ] University rules on AI assistance checked.
-- [ ] Grouped versus forward-time evaluation clarified with lecturer.
+- [X] Task 29 recorded on the allocation sheet.
+- [X] Task 29 announced in the VLE forum.
+- [X] University rules on AI assistance checked.
 
 ## Baseline and implementation
-- [ ] Original notebook preserved.
-- [ ] Given model run from a clean kernel.
-- [ ] Headline metrics and training time recorded.
+- [X] Original notebook preserved.
+- [X] Given model run from a clean kernel.
+- [X] Headline metrics and training time recorded.
 - [ ] Model and preprocessing packaged without learner replacement/tuning.
 - [ ] Configuration, training command and unit tests added.
 - [ ] Notebook retained as a thin client.
@@ -24,7 +23,7 @@ Check the exact submission time on the VLE.
 - [ ] Findings table records consequence and safeguard.
 
 ## Reproducibility and deployment
-- [ ] Pinned requirements recorded.
+- [X] Pinned requirements recorded.
 - [ ] Fresh-copy run reproduces metrics within a stated tolerance.
 - [ ] Container serves reviews.
 - [ ] Image identifier and size recorded.
