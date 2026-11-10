@@ -1,0 +1,9 @@
+measure,value
+contracts,510.0
+categories,41.0
+annotated_spans,13823.0
+total_characters,26807133.0
+median_characters,33143.0
+maximum_characters,338211.0
+masked_matches,824.0
+annotation_text_mismatches,0.0

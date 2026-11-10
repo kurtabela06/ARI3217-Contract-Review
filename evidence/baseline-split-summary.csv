@@ -1,0 +1,5 @@
+split,contracts,types,chunks
+held-out type,15,1,6581
+test,99,23,21461
+train,297,25,63641
+valid,99,21,19001
