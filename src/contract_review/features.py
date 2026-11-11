@@ -87,3 +87,29 @@ def query_matrix(queries, vectorizer, vocabulary):
 def details(question):
     """Extract the descriptive part of a supplied category question."""
     return question.split("Details:")[-1].strip()
+
+
+def build_classifier_features(counts, chunks, train_mask):
+    """Apply the notebook's TF-IDF and passage-position features."""
+    from sklearn.feature_extraction.text import TfidfTransformer
+
+    transformer = TfidfTransformer(
+        sublinear_tf=True
+    ).fit(counts[train_mask])
+
+    relative_position = chunks.relpos.values
+    position_features = sp.csr_matrix(
+        np.c_[
+            relative_position,
+            relative_position < 0.02,
+            relative_position < 0.1,
+            relative_position > 0.9,
+        ].astype(np.float32)
+    )
+
+    features = sp.hstack([
+        transformer.transform(counts),
+        position_features,
+    ]).tocsr()
+
+    return features, transformer
