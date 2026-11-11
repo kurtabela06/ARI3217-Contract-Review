@@ -1,0 +1,7 @@
+{
+  "classifier_fitting_seconds": 4.453799555999467,
+  "fitted_training_passages": 20676,
+  "feature_columns": 94546,
+  "fitted_classifiers": 41,
+  "holdout_sha256": "c123abd3dad0e865230977950252b8b4d3c5cd076ab018aba8dfb2d471198d66"
+}
