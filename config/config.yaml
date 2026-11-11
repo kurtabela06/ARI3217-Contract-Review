@@ -1,0 +1,10 @@
+data_path: "data"
+model_path: "models/model.joblib"
+red_flags_path: "config/red_flags.json"
+
+seed: 3217
+negative_sample: 0.25
+max_features: 150000
+
+review_budget: 20
+target_recall: 0.80
