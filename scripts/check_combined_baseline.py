@@ -1,3 +1,4 @@
+import json
 """Verify the classifier, knowledge blend and calibration together."""
 
 from pathlib import Path
@@ -105,6 +106,55 @@ def main():
     )
     if not np.isfinite(probabilities).all():
         raise ValueError("Calibration produced non-finite values.")
+
+
+    from contract_review.review import pack_eval
+
+    red_flags = json.loads(
+        (root / "config/red_flags.json").read_text(encoding="utf-8")
+    )
+
+    packs = pd.concat([
+        pack_eval(
+            probabilities, contracts, chunks, labels,
+            categories, red_flags, split,
+        )
+        for split in ["valid", "test", "held-out type"]
+    ])
+
+    summary = packs.groupby(["split", "budget"]).sum(
+        numeric_only=True
+    )
+    summary["red-flag recall"] = summary.found / summary.present
+    summary["highlights on target"] = (
+        summary["on target"] / summary.highlights
+    )
+
+    recorded_review = pd.read_csv(
+        evidence / "baseline-review-budget-results.csv"
+    ).set_index(["split", "budget"])
+
+    columns = [
+        "present", "found", "highlights", "on target",
+        "red-flag recall", "highlights on target",
+    ]
+
+    pd.testing.assert_frame_equal(
+        summary[columns].sort_index(),
+        recorded_review[columns].sort_index(),
+        check_dtype=False,
+        check_exact=False,
+        rtol=1e-9,
+        atol=1e-12,
+    )
+
+    summary.to_csv(
+        evidence / "packaged-review-budget-results.csv"
+    )
+    print("All recorded review-budget results match.")
+    print(summary.xs(20, level="budget")[
+        ["red-flag recall", "highlights on target"]
+    ])
 
     evaluation.to_csv(
         evidence / "packaged-combined-category-results.csv"
