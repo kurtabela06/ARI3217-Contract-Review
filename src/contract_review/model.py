@@ -41,3 +41,56 @@ def fit_linear(
             models[category] = model
 
     return scores, int(keep.sum()), models
+
+
+def calibrate(scores, fit_mask, labels):
+    """Fit the notebook's calibration and return probabilities and parameters."""
+    probabilities = np.zeros_like(scores)
+    parameters = np.zeros((scores.shape[1], 2))
+
+    for j in range(scores.shape[1]):
+        y = labels[fit_mask, j]
+        s = scores[fit_mask, j]
+        a, b = 1.0, 0.0
+
+        for _ in range(25):
+            p = 1 / (1 + np.exp(-(a * s + b)))
+            w = p * (1 - p)
+
+            gradient = np.array([
+                ((p - y) * s).sum() + 1e-3 * a,
+                (p - y).sum(),
+            ])
+            hessian = np.array([
+                [
+                    (w * s * s).sum() + 1e-3,
+                    (w * s).sum(),
+                ],
+                [
+                    (w * s).sum(),
+                    w.sum() + 1e-9,
+                ],
+            ])
+
+            a, b = np.array([a, b]) - np.linalg.solve(
+                hessian, gradient
+            )
+
+        probabilities[:, j] = 1 / (
+            1 + np.exp(-(a * scores[:, j] + b))
+        )
+        parameters[j] = [a, b]
+
+    return probabilities, parameters
+
+
+def apply_calibration(scores, parameters):
+    """Apply saved calibration without fitting on incoming data."""
+    probabilities = np.zeros_like(scores)
+
+    for j, (a, b) in enumerate(parameters):
+        probabilities[:, j] = 1 / (
+            1 + np.exp(-(a * scores[:, j] + b))
+        )
+
+    return probabilities

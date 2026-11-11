@@ -31,3 +31,44 @@ def test_training_is_repeatable_and_returns_usable_models():
         rtol=1e-6,
         atol=1e-6,
     )
+
+
+def test_calibration_uses_only_selected_labels_and_can_be_reapplied():
+    from contract_review.model import calibrate, apply_calibration
+
+    scores = np.array(
+        [[-2], [-1], [1], [2], [-0.5], [0.5]],
+        dtype=np.float32,
+    )
+    labels = np.array([[0], [0], [1], [1], [0], [1]])
+    validation = np.array([True, True, True, True, False, False])
+
+    probabilities, parameters = calibrate(
+        scores, validation, labels
+    )
+
+    changed_labels = labels.copy()
+    changed_labels[~validation] = 1 - changed_labels[~validation]
+    _, other_parameters = calibrate(
+        scores, validation, changed_labels
+    )
+
+    np.testing.assert_allclose(parameters, other_parameters)
+    np.testing.assert_allclose(
+        probabilities,
+        apply_calibration(scores, parameters),
+    )
+    assert np.isfinite(probabilities).all()
+    assert ((probabilities >= 0) & (probabilities <= 1)).all()
+
+
+def test_zero_calibration_parameters_produce_half_probability():
+    from contract_review.model import apply_calibration
+
+    scores = np.array([[-10], [0], [10]], dtype=np.float32)
+    parameters = np.array([[0.0, 0.0]])
+
+    np.testing.assert_allclose(
+        apply_calibration(scores, parameters),
+        [[0.5], [0.5], [0.5]],
+    )
