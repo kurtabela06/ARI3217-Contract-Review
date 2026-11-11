@@ -41,3 +41,64 @@ def group_contract_families(contracts, duplicate_cosine=0.80):
     result["family"] = result.contract_id.map(family)
 
     return result, pairs, vectors
+
+
+def split_contracts(
+    contracts,
+    spans,
+    seed=3217,
+    split=(0.6, 0.2, 0.2),
+    held_out_type="Franchise",
+):
+    """Apply the supplied family split and return its holdout fingerprint."""
+    import hashlib
+
+    import pandas as pd
+
+    result = contracts.copy()
+    held = result.ctype == held_out_type
+
+    families = result.loc[~held, "family"].unique()
+    rng = np.random.default_rng(seed)
+    rng.shuffle(families)
+
+    family_sizes = (
+        result.loc[~held]
+        .groupby("family")
+        .size()
+        .reindex(families)
+    )
+    cumulative = family_sizes.cumsum() / family_sizes.sum()
+
+    split_of_family = pd.Series(
+        np.where(
+            cumulative <= split[0],
+            "train",
+            np.where(
+                cumulative <= split[0] + split[1],
+                "valid",
+                "test",
+            ),
+        ),
+        index=families,
+    )
+
+    result["split"] = np.where(
+        held,
+        "held-out type",
+        result.family.map(split_of_family),
+    )
+
+    test_ids = result.loc[result.split == "test", "contract_id"]
+    fingerprint_spans = (
+        spans[spans.contract_id.isin(test_ids)]
+        .sort_values(["contract_id", "category", "start"])
+    )
+    fingerprint = hashlib.sha256(
+        (
+            ",".join(result.loc[test_ids.index, "title"])
+            + fingerprint_spans.to_csv(index=False)
+        ).encode()
+    ).hexdigest()
+
+    return result, fingerprint
