@@ -67,3 +67,20 @@ report their support and avoid strong category-level conclusions.
 
 These boundaries were retained using data support, before measuring
 temporal model performance. The primary baseline remains unchanged.
+
+## Temporal result — 12 November 2026
+
+Without changing the frozen periods, test macro AUPR was 0.489589.
+At 20 passages, 677 of 792 red-flag category occurrences were found:
+85.48% recall. Highlights on target were 24.73%.
+Validation selected knowledge weight 0.25.
+
+All 41 categories had defined AUPR; two had fewer than five positive
+test contracts. Interpret those categories cautiously.
+
+The result supports chronological robustness under this filing-year
+protocol. It does not prove that time caused the difference from the
+primary baseline, because the evaluated populations differ.
+
+The primary baseline and saved serving bundle remain unchanged.
+Detailed evidence: evidence/temporal-evaluation-summary.json.

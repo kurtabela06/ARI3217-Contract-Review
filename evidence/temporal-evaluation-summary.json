@@ -1,0 +1,35 @@
+{
+  "protocol": "supplementary_filing_year",
+  "source_commit": "0f374aaf9fae71d2acada3dcce5453b5b8c7a602",
+  "python": "3.14.4",
+  "requirements_sha256": "34eebaa5125de804963bc9e582e849a2485323111551a757eb730a54f3b94edf",
+  "seed": 3217,
+  "negative_sample": 0.25,
+  "max_features": 150000,
+  "periods": {
+    "train": "before 2010",
+    "valid": "2010 through 2014",
+    "test": "2015 onwards"
+  },
+  "partition_counts": {
+    "excluded_crossing_boundary": 4,
+    "excluded_franchise_family": 15,
+    "excluded_missing_year": 27,
+    "test": 220,
+    "train": 184,
+    "valid": 60
+  },
+  "holdout_sha256": "2bacdfa7ef4ddf4505f655be8c8c9f80e3a5782cbe32a83f4abd145e5505078c",
+  "knowledge_weight": 0.25,
+  "test_macro_aupr": 0.4895893991800727,
+  "categories_with_defined_aupr": 41,
+  "categories_with_fewer_than_5_positive_test_contracts": 2,
+  "review_budget": 20,
+  "red_flag_occurrences_present": 792,
+  "red_flag_occurrences_found": 677,
+  "red_flag_recall": 0.8547979797979798,
+  "highlights_on_target": 0.24734231041814317,
+  "pipeline_seconds": 16.920948100001624,
+  "timing_scope": "Pipeline only; excludes subsequent evaluation exports.",
+  "limitation": "Filing year is derived from titles. Different test populations prevent a direct causal comparison with primary baseline metrics."
+}
