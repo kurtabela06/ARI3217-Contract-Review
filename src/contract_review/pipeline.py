@@ -1,5 +1,7 @@
 """Connect the supplied model's extracted processing steps."""
 
+import logging
+
 import numpy as np
 
 from contract_review.chunking import make_chunks
@@ -21,6 +23,9 @@ from contract_review.splitting import (
 )
 
 
+logger = logging.getLogger(__name__)
+
+
 def run_pipeline(
     data_dir,
     seed=3217,
@@ -28,7 +33,9 @@ def run_pipeline(
     max_features=150_000,
 ):
     """Run the supplied full-data classifier and knowledge blend."""
+    logger.info("Loading contract dataset")
     contracts, spans, questions = load_cuad(data_dir)
+    logger.info("Loaded %d contracts and %d annotations", len(contracts), len(spans))
     categories = questions.category.tolist()
 
     contracts["ctype"] = contracts.title.map(contract_type)
@@ -39,6 +46,7 @@ def run_pipeline(
     )
 
     chunks = make_chunks(contracts)
+    logger.info("Created %d passages", len(chunks))
     lookup = contracts.set_index("contract_id")
 
     chunks["split"] = chunks.contract_id.map(lookup["split"])
@@ -70,6 +78,7 @@ def run_pipeline(
         negative_sample=negative_sample,
     )
 
+    logger.info("Fitted %d classifiers using %d passages", len(models), fitted_rows)
     weighted = bm25_matrix(counts, masks["train"])
     query_vectors = query_matrix(
         knowledge_queries(questions), vectorizer, vocabulary
@@ -90,6 +99,9 @@ def run_pipeline(
     probabilities, calibration = calibrate(
         combined, masks["valid"], labels
     )
+
+    logger.info("Selected knowledge weight %.2f", weight)
+    logger.info("Calibration completed")
 
     return {
         "contracts": contracts,
@@ -117,6 +129,8 @@ def run_configured_pipeline(config_path=None, env_path=None):
     from contract_review.config import load_settings
 
     settings = load_settings(config_path, env_path)
+    from contract_review.logging_setup import setup_logging
+    setup_logging(settings["log_level"])
 
     result = run_pipeline(
         data_dir=settings["data_path"],

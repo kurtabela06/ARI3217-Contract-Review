@@ -1,9 +1,12 @@
 """Dataset loading and text preparation."""
 
 import json
+import logging
 import time
 from pathlib import Path
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 import re
 
 
@@ -101,5 +104,5 @@ def load_cuad(
     for frame, path in zip((contracts, spans, questions), cache):
         frame.to_parquet(path)
 
-    print(f"parsed and cached in {time.time() - started:.0f}s")
+    logger.info("Parsed and cached dataset in %.2f seconds", time.time() - started)
     return contracts, spans, questions
