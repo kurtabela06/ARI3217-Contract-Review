@@ -1,0 +1,42 @@
+category,train,valid,test
+Document Name,184,60,220
+Parties,184,60,220
+Agreement Date,168,59,205
+Effective Date,138,50,169
+Expiration Date,156,52,170
+Renewal Term,75,21,64
+Notice Period To Terminate Renewal,47,12,41
+Governing Law,161,54,183
+Most Favored Nation,15,4,7
+Non-Compete,45,16,42
+Exclusivity,69,31,59
+No-Solicit Of Customers,11,3,11
+Competitive Restriction Exception,29,12,22
+No-Solicit Of Employees,13,6,28
+Non-Disparagement,7,9,16
+Termination For Convenience,57,19,96
+Rofr/Rofo/Rofn,26,11,36
+Change Of Control,40,17,48
+Anti-Assignment,140,45,158
+Revenue/Profit Sharing,72,20,54
+Price Restrictions,8,1,6
+Minimum Commitment,72,17,56
+Volume Restriction,40,13,28
+Ip Ownership Assignment,31,13,65
+Joint Ip Ownership,18,7,18
+License Grant,104,31,99
+Non-Transferable License,52,17,58
+Affiliate License-Licensor,4,2,15
+Affiliate License-Licensee,14,4,36
+Unlimited/All-You-Can-Eat-License,10,3,4
+Irrevocable Or Perpetual License,17,5,40
+Source Code Escrow,9,1,3
+Post-Termination Services,66,21,74
+Audit Rights,83,26,81
+Uncapped Liability,40,11,51
+Cap On Liability,117,34,100
+Liquidated Damages,26,7,17
+Warranty Duration,27,11,31
+Insurance,46,23,72
+Covenant Not To Sue,32,7,46
+Third Party Beneficiary,10,4,12

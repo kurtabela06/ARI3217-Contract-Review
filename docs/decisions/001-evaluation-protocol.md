@@ -49,3 +49,21 @@ Ignoring time-based evaluation leaves the diary instruction unaddressed.
 
 Year coverage, exclusion counts, partition counts, category support,
 metrics, runtime and commit references.
+
+## Temporal feasibility decision — 12 November 2026
+
+Retain the pre-performance boundaries:
+training before 2010; validation 2010–2014; test from 2015.
+
+Measured partitions: 184 training contracts (182 families),
+60 validation (59 families), and 220 test (214 families).
+
+Exclude 15 contracts in franchise families, 27 in missing-year families,
+and 4 in families crossing temporal boundaries.
+
+All categories have positive training and validation examples.
+Two categories have fewer than five positive test contracts;
+report their support and avoid strong category-level conclusions.
+
+These boundaries were retained using data support, before measuring
+temporal model performance. The primary baseline remains unchanged.

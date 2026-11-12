@@ -1,0 +1,7 @@
+temporal_split,contracts,families
+excluded_crossing_boundary,4,2
+excluded_franchise_family,15,15
+excluded_missing_year,27,27
+test,220,214
+train,184,182
+valid,60,59
