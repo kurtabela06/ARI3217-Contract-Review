@@ -1,0 +1,14 @@
+{
+  "contracts_checked": 114,
+  "contracts_by_split": {
+    "held-out type": 15,
+    "test": 99
+  },
+  "all_review_selections_match": true,
+  "maximum_probability_difference": 0.0,
+  "probability_rtol": 1e-06,
+  "probability_atol": 1e-07,
+  "bundle_sha256": "060a3c7b931ecb95d7a45b4bed698c8cfca8a2b6ff185d49173965673d7d52a8",
+  "holdout_sha256": "c123abd3dad0e865230977950252b8b4d3c5cd076ab018aba8dfb2d471198d66",
+  "input_note": "Uses the notebook's already-masked test contract text; masking behaviour is checked separately by unit tests."
+}

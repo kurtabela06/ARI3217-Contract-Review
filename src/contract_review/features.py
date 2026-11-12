@@ -89,13 +89,16 @@ def details(question):
     return question.split("Details:")[-1].strip()
 
 
-def build_classifier_features(counts, chunks, train_mask):
+def build_classifier_features(counts, chunks, train_mask=None, transformer=None):
     """Apply the notebook's TF-IDF and passage-position features."""
     from sklearn.feature_extraction.text import TfidfTransformer
 
-    transformer = TfidfTransformer(
-        sublinear_tf=True
-    ).fit(counts[train_mask])
+    if transformer is None:
+        if train_mask is None:
+            raise ValueError("Training rows are required to fit TF-IDF.")
+        transformer = TfidfTransformer(
+            sublinear_tf=True
+        ).fit(counts[train_mask])
 
     relative_position = chunks.relpos.values
     position_features = sp.csr_matrix(
@@ -133,3 +136,28 @@ def bm25_reference(counts, fit_rows):
         "k1": 1.5,
         "b": 0.75,
     }
+
+
+def apply_bm25(counts, reference):
+    """Weight new passages using saved training statistics."""
+    lengths = np.asarray(counts.sum(axis=1)).ravel()
+    weighted = counts.copy()
+    rows = np.repeat(
+        np.arange(weighted.shape[0]),
+        np.diff(weighted.indptr),
+    )
+    k1 = reference["k1"]
+    b = reference["b"]
+
+    weighted.data = (
+        weighted.data * (k1 + 1)
+        / (
+            weighted.data
+            + k1 * (
+                1 - b
+                + b * lengths[rows] / reference["average_length"]
+            )
+        )
+        * reference["idf"][weighted.indices]
+    )
+    return weighted
