@@ -15,6 +15,7 @@ from contract_review.features import (
 )
 from contract_review.knowledge import knowledge_queries
 from contract_review.labelling import label_chunks
+from contract_review.validation import validate_clause_coverage
 from contract_review.metadata import contract_type, filing_year
 from contract_review.model import calibrate, fit_linear
 from contract_review.scoring import select_knowledge_weight
@@ -59,6 +60,7 @@ def run_pipeline(
     ]
 
     labels, coverage = label_chunks(chunks, spans, categories)
+    validate_clause_coverage(coverage)
     masks = {
         name: (chunks["split"] == name).to_numpy()
         for name in ["train", "valid", "test", "held-out type"]

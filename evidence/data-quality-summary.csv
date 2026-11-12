@@ -1,0 +1,6 @@
+check,count,denominator,share
+Categories appearing in fewer than 30 contracts,5,41,0.12195121951219512
+Contract-category pairs without annotations,14208,20910,0.6794835007173601
+Annotated spans with less than 90% in one chunk,895,13823,0.06474716052955219
+Excess exact duplicate annotation rows,0,13823,0.0
+Invalid annotation offsets,0,13823,0.0
