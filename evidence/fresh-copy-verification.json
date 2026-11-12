@@ -1,0 +1,11 @@
+{
+  "status": "metric_weight_and_fingerprint_match",
+  "source_commit": "e4896a358bef0b557e9de52366a47a3a383d1e00",
+  "python": "3.14.4",
+  "requirements_sha256": "34eebaa5125de804963bc9e582e849a2485323111551a757eb730a54f3b94edf",
+  "test_macro_aupr": 0.49900235951045957,
+  "knowledge_weight": 0.25,
+  "holdout_sha256": "c123abd3dad0e865230977950252b8b4d3c5cd076ab018aba8dfb2d471198d66",
+  "elapsed_seconds": 27.216185624998616,
+  "scope": "New project checkout and virtual environment on the same Ubuntu VM; shared Kaggle download cache may be reused."
+}
