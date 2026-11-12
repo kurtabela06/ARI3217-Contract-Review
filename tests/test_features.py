@@ -43,3 +43,20 @@ def test_bm25_training_weights_ignore_changes_to_nontraining_rows():
         counts.toarray(),
         original.toarray(),
     )
+
+
+def test_bm25_reference_matches_known_training_statistics():
+    from contract_review.features import bm25_reference
+
+    counts = sp.csr_matrix(
+        [[2, 0], [0, 1], [900, 900]],
+        dtype=np.float32,
+    )
+    training = np.array([True, True, False])
+
+    reference = bm25_reference(counts, training)
+
+    np.testing.assert_allclose(
+        reference["idf"], [np.log(2), np.log(2)]
+    )
+    np.testing.assert_allclose(reference["average_length"], 1.5)

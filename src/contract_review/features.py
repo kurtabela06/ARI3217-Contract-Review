@@ -113,3 +113,23 @@ def build_classifier_features(counts, chunks, train_mask):
     ]).tocsr()
 
     return features, transformer
+
+
+def bm25_reference(counts, fit_rows):
+    """Retain training statistics needed to score future passages."""
+    n = fit_rows.sum()
+    frequency = np.asarray(
+        (counts[fit_rows] > 0).sum(axis=0)
+    ).ravel()
+    idf = np.log(
+        (n - frequency + 0.5) / (frequency + 0.5) + 1
+    ).astype(np.float32)
+
+    lengths = np.asarray(counts.sum(axis=1)).ravel()
+
+    return {
+        "idf": idf,
+        "average_length": lengths[fit_rows].mean(),
+        "k1": 1.5,
+        "b": 0.75,
+    }

@@ -32,3 +32,6 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.scripts]
+contract-train = "contract_review.train:main"

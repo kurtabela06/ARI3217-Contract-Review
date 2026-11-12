@@ -8,6 +8,7 @@ from contract_review.chunking import make_chunks
 from contract_review.data import load_cuad
 from contract_review.features import (
     bm25_matrix,
+    bm25_reference,
     build_classifier_features,
     build_counts,
     query_matrix,
@@ -121,6 +122,11 @@ def run_pipeline(
         "transformer": transformer,
         "scaling": scaling,
         "calibration": calibration,
+        "bm25_reference": bm25_reference(counts, masks["train"]),
+        "knowledge_query_vectors": query_vectors,
+        "selected_columns": np.array([
+            vectorizer.vocabulary_[term] for term in vocabulary
+        ]),
     }
 
 
