@@ -26,4 +26,4 @@ fewer than 60 contracts. Those thresholds must not be confused.
 
 ## Evidence reference
 
-Commit: add the commit ID containing the measured evidence after committing.
+Commit: e4da385
