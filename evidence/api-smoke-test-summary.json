@@ -1,0 +1,14 @@
+{
+  "health_status": 200,
+  "review_status": 200,
+  "model_version": "0.1.0:060a3c7b931e",
+  "highlights_returned": 2,
+  "citation_locations_match": true,
+  "email_masking_verified": true,
+  "invalid_request_statuses": {
+    "missing_text": 422,
+    "empty_text": 422,
+    "whitespace_text": 422
+  },
+  "scope": "Synthetic HTTP smoke test; not a measure of extraction accuracy or real-workload performance."
+}

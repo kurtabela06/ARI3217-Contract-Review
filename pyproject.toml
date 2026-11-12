@@ -17,6 +17,8 @@ dependencies = [
     "rdflib",
     "pyshacl",
     "matplotlib",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
     "kagglehub",
     "pyyaml>=6.0",
     "python-dotenv>=1.0",
