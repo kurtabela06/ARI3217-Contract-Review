@@ -22,6 +22,7 @@ from contract_review.scoring import select_knowledge_weight
 from contract_review.splitting import (
     group_contract_families,
     split_contracts,
+    split_contracts_temporally,
 )
 
 
@@ -33,6 +34,7 @@ def run_pipeline(
     seed=3217,
     negative_sample=0.25,
     max_features=150_000,
+    evaluation_protocol="baseline",
 ):
     """Run the supplied full-data classifier and knowledge blend."""
     logger.info("Loading contract dataset")
@@ -43,9 +45,18 @@ def run_pipeline(
     contracts["ctype"] = contracts.title.map(contract_type)
     contracts["year"] = contracts.title.map(filing_year)
     contracts, _, _ = group_contract_families(contracts)
-    contracts, fingerprint = split_contracts(
-        contracts, spans, seed=seed
-    )
+    if evaluation_protocol == "baseline":
+        contracts, fingerprint = split_contracts(
+            contracts, spans, seed=seed
+        )
+    elif evaluation_protocol == "temporal":
+        contracts, fingerprint = split_contracts_temporally(
+            contracts, spans
+        )
+    else:
+        raise ValueError(
+            f"Unknown evaluation protocol: {evaluation_protocol}"
+        )
 
     chunks = make_chunks(contracts)
     logger.info("Created %d passages", len(chunks))
@@ -117,6 +128,7 @@ def run_pipeline(
         "probabilities": probabilities,
         "weight": weight,
         "holdout_sha256": fingerprint,
+        "evaluation_protocol": evaluation_protocol,
         "fitted_training_passages": fitted_rows,
         "models": models,
         "vectorizer": vectorizer,

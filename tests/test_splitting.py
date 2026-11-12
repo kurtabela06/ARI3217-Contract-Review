@@ -82,3 +82,59 @@ def test_holdout_fingerprint_detects_changed_test_annotation():
     _, changed_fingerprint = split_contracts(contracts, changed_spans)
 
     assert changed_fingerprint != original_fingerprint
+
+
+def temporal_example_data():
+    import numpy as np
+
+    contracts = pd.DataFrame({
+        "contract_id": list(range(8)),
+        "title": [f"Example {i}" for i in range(8)],
+        "family": [0, 0, 1, 2, 3, 3, 4, 5],
+        "ctype": ["Service"] * 7 + ["Franchise"],
+        "year": [2005, 2006, 2012, 2018, 2009, 2011, np.nan, 2019],
+    })
+    spans = pd.DataFrame({
+        "contract_id": list(range(8)),
+        "category": ["Example"] * 8,
+        "start": [0] * 8,
+        "end": [10] * 8,
+        "exact": [True] * 8,
+    })
+    return contracts, spans
+
+
+def test_temporal_split_preserves_chronology_and_excludes_families():
+    from contract_review.splitting import split_contracts_temporally
+
+    contracts, spans = temporal_example_data()
+    original = contracts.copy(deep=True)
+
+    result, fingerprint = split_contracts_temporally(contracts, spans)
+    repeated, repeated_fingerprint = split_contracts_temporally(
+        contracts, spans
+    )
+
+    assert result["split"].tolist() == [
+        "train", "train", "valid", "test",
+        "excluded_crossing_boundary", "excluded_crossing_boundary",
+        "excluded_missing_year", "excluded_franchise_family",
+    ]
+    assert result.groupby("family")["split"].nunique().max() == 1
+    assert fingerprint == repeated_fingerprint
+    pd.testing.assert_frame_equal(result, repeated)
+    pd.testing.assert_frame_equal(contracts, original)
+
+
+def test_missing_year_excludes_the_whole_family():
+    from contract_review.splitting import split_contracts_temporally
+
+    contracts, spans = temporal_example_data()
+    contracts.loc[0, "year"] = float("nan")
+
+    result, _ = split_contracts_temporally(contracts, spans)
+
+    assert (
+        result.loc[result.family == 0, "split"]
+        == "excluded_missing_year"
+    ).all()
