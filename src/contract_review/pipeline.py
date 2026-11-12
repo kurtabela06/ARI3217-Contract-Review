@@ -110,3 +110,19 @@ def run_pipeline(
         "scaling": scaling,
         "calibration": calibration,
     }
+
+
+def run_configured_pipeline(config_path=None, env_path=None):
+    """Resolve settings and execute the supplied model workflow."""
+    from contract_review.config import load_settings
+
+    settings = load_settings(config_path, env_path)
+
+    result = run_pipeline(
+        data_dir=settings["data_path"],
+        seed=settings["seed"],
+        negative_sample=settings["negative_sample"],
+        max_features=settings["max_features"],
+    )
+
+    return result, settings
