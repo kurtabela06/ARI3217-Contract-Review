@@ -12,22 +12,22 @@ Check the exact submission time on the VLE.
 - [X] Original notebook preserved.
 - [X] Given model run from a clean kernel.
 - [X] Headline metrics and training time recorded.
-- [ ] Model and preprocessing packaged without learner replacement/tuning.
-- [ ] Configuration, training command and unit tests added.
-- [ ] Notebook retained as a thin client.
+- [X] Model and preprocessing packaged without learner replacement/tuning.
+- [X] Configuration, training command and unit tests added.
+- [X] Notebook retained as a thin client.
 
 ## Data investigation
-- [ ] At least three documented quirks verified with counts.
-- [ ] One additional potential issue investigated.
-- [ ] At least one quirk guarded by a test or input check.
-- [ ] Findings table records consequence and safeguard.
+- [X] At least three documented quirks verified with counts.
+- [X] One additional potential issue investigated.
+- [X] At least one quirk guarded by a test or input check.
+- [X] Findings table records consequence and safeguard.
 
 ## Reproducibility and deployment
 - [X] Pinned requirements recorded.
-- [ ] Fresh-copy run reproduces metrics within a stated tolerance.
+- [X] Fresh-copy run reproduces metrics within a stated tolerance.
 - [ ] Container serves reviews.
 - [ ] Image identifier and size recorded.
-- [ ] Training and serving preprocessing consistency checked.
+- [X] Training and serving preprocessing consistency checked.
 
 ## Monitoring and performance
 - [ ] Every prediction/review logged with model version.
