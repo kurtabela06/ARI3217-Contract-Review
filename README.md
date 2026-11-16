@@ -35,3 +35,62 @@ Run tests with:
 ```bash
 python -m pytest tests/ -q
 ```
+
+## Review API
+
+Run from the project root with a trained serving bundle available:
+
+```bash
+source .venv/bin/activate
+uvicorn contract_review.api:app --host 0.0.0.0 --port 8888
+```
+
+If the bundle is missing, run contract-train first.
+
+Check health:
+
+```bash
+curl http://localhost:8888/health
+```
+
+Request a review using synthetic example text:
+
+```bash
+curl -X POST http://localhost:8888/review \
+  -H "Content-Type: application/json" \
+  -d '{"text":"The company may terminate this agreement by providing thirty days of written notice."}'
+```
+
+The response includes:
+- A request identifier and model version.
+- Up to the configured number of distinct highlighted passages.
+- Category tags and probability estimates.
+- Character start/end positions and citations.
+- Red-flag categories not found in the highlights.
+
+“Not found in highlights” does not establish that a clause is absent.
+The service supports human review; it does not give legal advice.
+
+The bundle loads once at startup. Restart the API after replacing it.
+Review requests do not train or recalibrate the model.
+
+Emails and phone numbers are masked with equal-length replacements.
+This is partial masking, not complete anonymisation. The supplied email
+regex can also mask trailing punctuation.
+
+Interactive documentation: http://localhost:8888/docs
+
+For access from macOS through VirtualBox, forward host port 8888
+to guest port 8888.
+
+Run the synthetic HTTP checks while the server is running:
+
+```bash
+python scripts/check_review_api.py
+```
+
+Training–serving equivalence was checked separately on 99 regular test
+contracts and 15 franchise contracts. The check used their already-masked
+dataset text; masking behaviour is covered separately by tests.
+
+Stop the server with Control+C.
