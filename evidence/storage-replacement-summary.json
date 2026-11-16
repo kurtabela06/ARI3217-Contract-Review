@@ -1,0 +1,15 @@
+{
+  "original_container": "contract-api-storage",
+  "replacement_container": "contract-api-storage-replacement",
+  "volume": "contract-review-records",
+  "before": {
+    "review_count": 2,
+    "records_sha256": "f9efb7933ca16cb5b1d12aefec17198142d0d669fcf62b6dde3814e01fbd444e"
+  },
+  "after": {
+    "review_count": 2,
+    "records_sha256": "f9efb7933ca16cb5b1d12aefec17198142d0d669fcf62b6dde3814e01fbd444e"
+  },
+  "all_stored_records_match": true,
+  "named_volume_mount_verified": true
+}

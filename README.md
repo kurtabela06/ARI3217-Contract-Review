@@ -135,3 +135,56 @@ reviews do not retrain the model. Training data is removed during the build.
 Image identity, architecture and local uncompressed size are recorded in
 evidence/container-image-summary.json. Container training measurements and
 API smoke-test results are recorded separately in evidence/.
+
+## Persistent review records
+
+Each successful POST /review commits a SQLite record before returning.
+Records contain the request ID, UTC timestamp, model version, passage
+positions, category scores, and other response metadata. Contract text
+and highlighted passage text are excluded.
+
+REVIEW_DB_PATH controls the database location. Its default is
+var/reviews.sqlite3, relative to the process working directory.
+
+For Docker, the storage-enabled deployment uses:
+
+```bash
+docker volume create contract-review-records
+docker run -d --name contract-api-storage-replacement \
+  -p 8888:8888 \
+  -e REVIEW_DB_PATH=/app/var/reviews.sqlite3 \
+  -v contract-review-records:/app/var \
+  contract-review:0.2
+```
+
+Run this creation command only when the container name and host port are
+available. For the existing deployment, use:
+
+```bash
+docker stop --time 30 contract-api-storage-replacement
+docker start contract-api-storage-replacement
+```
+
+The named volume preserves the database across container restarts and
+replacement, provided the replacement mounts the same volume. Removing
+the container does not remove this named volume.
+
+If the database cannot be written, /review returns HTTP 503 instead of
+a successful response. /health checks process availability; it does not
+check database write access.
+
+Storage failure and container-replacement persistence were verified.
+Evidence is recorded in evidence/storage-failure-summary.json and
+evidence/storage-replacement-summary.json.
+
+Retention and backups:
+- Records currently remain until deliberately deleted; automatic expiry
+  and backups are not implemented.
+- An operator must define retention and backup arrangements before
+  operational use.
+- Stop all containers using the volume before maintenance or deletion.
+- Deleting contract-review-records permanently removes its stored history.
+- Treat stored metadata as potentially sensitive and restrict access to
+  the Docker host and database.
+
+SQLite files are excluded from Git and the Docker build context.

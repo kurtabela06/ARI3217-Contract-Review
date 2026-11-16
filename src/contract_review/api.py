@@ -1,5 +1,6 @@
 """HTTP interface for the fitted contract review assistant."""
 
+import sqlite3
 import hashlib
 import logging
 import uuid
@@ -8,6 +9,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from contract_review.storage import save_review
 from contract_review.artifacts import load_bundle
 from contract_review.config import load_settings
 from contract_review.inference import score_contract
@@ -88,8 +90,7 @@ def review(item: ReviewRequest):
         "Review %s model=%s characters=%d highlights=%d",
         request_id, model_version, len(item.text), len(highlights),
     )
-
-    return {
+    result = {
         "request_id": request_id,
         "model_version": model_version,
         "review_budget": bundle["review_budget"],
@@ -102,3 +103,18 @@ def review(item: ReviewRequest):
             "Not found in highlights does not establish absence."
         ),
     }
+
+    try:
+        save_review(result)
+    except (OSError, sqlite3.Error):
+        logger.error(
+            "Review storage failed request_id=%s model=%s",
+            request_id,
+            model_version,
+        )
+        raise HTTPException(
+            status_code=503,
+            detail="Review storage unavailable. Please retry later.",
+        ) from None
+
+    return result

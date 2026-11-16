@@ -16,3 +16,9 @@ __pycache__
 .pytest_cache
 .DS_Store
 kaggle.json
+
+var
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
