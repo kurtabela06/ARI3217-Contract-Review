@@ -94,3 +94,44 @@ contracts and 15 franchise contracts. The check used their already-masked
 dataset text; masking behaviour is covered separately by tests.
 
 Stop the server with Control+C.
+
+## Docker deployment
+
+Build the image; training runs during the build:
+
+```bash
+docker build --progress=plain -t contract-review:0.1 .
+```
+
+Start the API:
+
+```bash
+docker run -d --name contract-api -p 8888:8888 contract-review:0.1
+```
+
+Check health and run the synthetic API checks:
+
+```bash
+curl http://localhost:8888/health
+python scripts/check_review_api.py
+```
+
+Inspect logs and stop gracefully:
+
+```bash
+docker logs contract-api
+docker stop --time 30 contract-api
+```
+
+Restart the existing container:
+
+```bash
+docker start contract-api
+```
+
+The image contains a fitted bundle. Starting the container and submitting
+reviews do not retrain the model. Training data is removed during the build.
+
+Image identity, architecture and local uncompressed size are recorded in
+evidence/container-image-summary.json. Container training measurements and
+API smoke-test results are recorded separately in evidence/.
