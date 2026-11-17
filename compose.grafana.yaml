@@ -1,0 +1,12 @@
+services:
+  grafana:
+    image: ${GRAFANA_IMAGE:?Missing pinned Grafana image}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+volumes:
+  grafana-data:

@@ -1,0 +1,28 @@
+services:
+  api:
+    image: contract-review:0.3
+    ports:
+      - "8888:8888"
+    environment:
+      REVIEW_DB_PATH: /app/var/reviews.sqlite3
+    volumes:
+      - review-records:/app/var
+
+  prometheus:
+    image: ${PROMETHEUS_IMAGE:?Missing pinned Prometheus image}
+    ports:
+      - "127.0.0.1:9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=3d
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+volumes:
+  review-records:
+    external: true
+    name: contract-review-records
+
+  prometheus-data:

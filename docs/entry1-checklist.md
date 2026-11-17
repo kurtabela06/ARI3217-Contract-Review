@@ -25,16 +25,16 @@ Check the exact submission time on the VLE.
 ## Reproducibility and deployment
 - [X] Pinned requirements recorded.
 - [X] Fresh-copy run reproduces metrics within a stated tolerance.
-- [ ] Container serves reviews.
-- [ ] Image identifier and size recorded.
+- [X] Container serves reviews.
+- [X] Image identifier and size recorded.
 - [X] Training and serving preprocessing consistency checked.
 
 ## Monitoring and performance
-- [ ] Every prediction/review logged with model version.
-- [ ] Request count, latency and one input feature exposed.
-- [ ] Realistic workload documented and executed.
-- [ ] p95 latency or batch throughput recorded.
-- [ ] Dashboard evidence captured.
+- [X] Every prediction/review logged with model version.
+- [X] Request count, latency and one input feature exposed.
+- [X] Realistic workload documented and executed.
+- [X] p95 latency or batch throughput recorded.
+- [X] Dashboard evidence captured.
 
 ## Architecture and reasoning
 - [ ] Four-layer enterprise architecture diagram.

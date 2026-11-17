@@ -9,6 +9,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from contract_review.monitoring import install_monitoring
 from contract_review.storage import save_review
 from contract_review.artifacts import load_bundle
 from contract_review.config import load_settings
@@ -28,7 +29,7 @@ model_version = f'{bundle["package_version"]}:{bundle_sha[:12]}'
 logger.info("Loaded serving bundle version %s", model_version)
 
 app = FastAPI(title="Contract Review Assistant")
-
+install_monitoring(app)
 
 class ReviewRequest(BaseModel):
     text: str = Field(min_length=1)

@@ -188,3 +188,105 @@ Retention and backups:
   the Docker host and database.
 
 SQLite files are excluded from Git and the Docker build context.
+
+## Monitoring and load benchmark
+
+Start the monitoring deployment after building contract-review:0.3 and
+preparing the pinned image references in monitoring/images.env:
+
+```bash
+docker compose --env-file monitoring/images.env \
+  -f compose.monitoring.yaml -f compose.grafana.yaml \
+  -p contract-review up -d
+```
+
+Check service state:
+
+```bash
+docker compose --env-file monitoring/images.env \
+  -f compose.monitoring.yaml -f compose.grafana.yaml \
+  -p contract-review ps
+```
+
+Endpoints on the Ubuntu VM:
+- API health: http://localhost:8888/health
+- API metrics: http://localhost:8888/metrics/
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000
+
+Prometheus and Grafana are published on VM loopback only. From macOS,
+open the Grafana tunnel and keep it running:
+
+```bash
+ssh -p 2222 -N -L 3000:127.0.0.1:3000 kurt-abela@127.0.0.1
+```
+
+Open http://localhost:3000 and select:
+Dashboards → RD1 → Contract Review — RD1 Operations.
+
+The provisioned dashboard shows API scrape availability, successful
+reviews, 4xx and 5xx responses, processing latency and request rate.
+Metrics exclude contract text and request IDs. API counters reset when
+the process restarts; Prometheus retains collected history for three days.
+Grafana configuration and Prometheus history use persistent volumes.
+
+An available metrics endpoint does not establish that database writes
+work or that predictions are correct. Expected HTTP 422 responses from
+invalid-input tests are separate from HTTP 5xx server failures.
+
+### Short workload benchmark — 17 November 2026
+
+Run against the local API:
+
+```bash
+python scripts/check_review_load.py
+```
+
+If dataset discovery fails, provide:
+--dataset /path/to/CUAD_v1.json
+
+The test selects 40 complete contracts at evenly spaced ranks by length,
+including the shortest and longest. It shuffles them with seed 42 and
+uses the same contracts for sequential and two-concurrent-request phases.
+Three successful warm-up requests are excluded from the measurements.
+Running the complete test creates 83 review records.
+
+Selected lengths: minimum 645, median 33,391, p95 approximately 163,466,
+and maximum 338,211 characters.
+
+| Measure | Sequential | Concurrency 2 |
+|---|---:|---:|
+| Successful requests | 40/40 | 40/40 |
+| Failed requests | 0 | 0 |
+| Client p50 latency | 28.12 ms | 53.53 ms |
+| Client p95 latency | 71.65 ms | 142.41 ms |
+| Maximum client latency | 152.22 ms | 170.91 ms |
+| Observed successful throughput | 26.95 reviews/s | 30.33 reviews/s |
+
+The VM provided Docker with two CPUs and approximately 5.26 GiB of memory.
+The API, load generator, Prometheus and Grafana shared this VM.
+
+Client timings include receiving and parsing the response. They include
+inference and database saving, but exclude model startup and training.
+Dashboard percentiles are histogram estimates over a rolling window and
+need not equal the client percentiles calculated from individual requests.
+
+Each phase lasted approximately 1.3–1.5 seconds. These are short workload
+measurements, not sustained production capacity or a simulation of normal
+monthly arrivals. Request success does not establish extraction accuracy.
+The sequential phase ran first; order and cache effects were not isolated.
+
+Evidence:
+- evidence/review-load-summary.json
+- evidence/load-sequential-requests.csv
+- evidence/load-burst-requests.csv
+- evidence/monitoring-deployment-summary.json
+- evidence/monitoring-metrics.txt
+- evidence/rd1-dashboard.png
+
+The summary records the pre-benchmark Git HEAD and a dirty working tree.
+The monitoring implementation, benchmark script and results are committed
+together so the producing code and evidence can be inspected together.
+
+This dashboard covers operational behaviour. Contract-type monitoring and
+recall from delayed lawyer corrections remain separate project work.
