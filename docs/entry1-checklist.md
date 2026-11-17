@@ -40,7 +40,7 @@ Check the exact submission time on the VLE.
 - [X] Python base image pinned by digest.
 - [X] Current deployment and measured results indexed in documentation.
 - [X] Reusable Docker storage recheck passed on Ubuntu; result recorded separately from historical manual checks.
-- [ ] Historical supplied notebook excerpts reviewed and history policy resolved.
+- [X] Historical supplied outputs reviewed; final retention decision recorded in ADR 002.
 
 ## Architecture and reasoning
 - [ ] Four-layer enterprise architecture diagram.

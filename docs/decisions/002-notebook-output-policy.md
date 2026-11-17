@@ -1,36 +1,40 @@
-# ADR 002 — Notebook outputs and reference preservation
+# ADR 002 — Notebook outputs and history retention
 
-Status: accepted.
+Status: accepted and final.
+Decision recorded: 17 November 2026.
 
-The supplied notebook's saved outputs are worked reference examples.
-They are not measurements from my own investigation.
+## Decision
 
-Keep a byte-for-byte reference backup under Git-ignored data/reference.
-Keep the tracked notebook's code and Markdown while clearing outputs
-and execution counts before commits.
+Retain the existing Git history, including historical supplied notebook
+outputs, to preserve provenance and the commit identifiers referenced by
+the project's evidence. No history rewrite is planned.
+
+## Rationale and scope
+
+The initial notebook upload contained supplied worked outputs, including
+example contract passages. Keeping that historical reference documents
+the starting point from which the model was reproduced and packaged.
+
+Running the baseline can produce contract excerpts in notebook outputs.
+Saving and committing outputs is a separate action. The initial supplied
+examples must not be presented as newly measured student results.
+
+The notebook's Section 10 includes “no data or contract text committed”.
+Retaining the historical examples is a deliberate, documented exception
+to that instruction. This decision does not assert that Git history
+contains no contract text.
+
+## Policy for subsequent work
+
+Keep the tracked notebook's outputs and execution counts cleared before
+committing. Preserve the supplied code and Markdown.
 
 Run:
 python scripts/clear_notebook_outputs.py
 
-Do not commit raw contracts, processed contract text, trained artifacts,
-credentials, or screenshots containing contract passages.
+Keep the byte-for-byte reference backup under Git-ignored data/reference.
+Exclude newly generated contract passages, raw/processed datasets,
+credentials and trained artifacts from commits. Store reviewed aggregate
+measurements and figures separately with source and environment references.
 
-Store reviewed aggregate measurements and figures separately as evidence.
-Record the code commit, environment and configuration for each experiment.
-
-Clearing current outputs does not remove copies from earlier Git history.
-Review history before making the repository public.
-
-
-## Historical exception identified during repository review — 17 November 2026
-
-The initial public commit `7f27e29a427c909517b0fd319efd1a7c2084b86d` includes
-supplied notebook outputs, including example contract passages. The current
-reference notebook has zero saved outputs, but clearing it did not remove that
-history. These worked examples are not the student's new measured results.
-
-History remediation remains an open policy decision. Rewriting public history
-would change commit IDs referenced by evidence; its scope and replacement
-references must be planned before any rewrite. The documentation-alignment
-change preserves history and records the exception openly. See
-`docs/repository-audit-followup.md`.
+Historical outputs remain unchanged; current notebook outputs are cleared.

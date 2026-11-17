@@ -41,7 +41,7 @@ verification still to be done. It does not replace the lecturer's instructions.
   `evidence/storage-recheck-summary.json`. Earlier manual evidence is preserved.
 - [ ] Verify provisioned dashboard presentation after pulling this branch. No
   model or application image rebuild is needed for dashboard-only changes.
-- [ ] Decide how to handle supplied notebook excerpts in older public history.
+- [X] Historical supplied outputs retained by final decision; see ADR 002.
   The current notebook is cleared, but initial commit
   `7f27e29a427c909517b0fd319efd1a7c2084b86d` retains worked outputs. History
   rewriting would change existing evidence references and needs a deliberate
@@ -60,3 +60,11 @@ The full notebook's CI gate, MLflow/registry, knowledge-layer extensions,
 contract-type/delayed-label monitoring and local-model GenAI remain wider-project
 requirements unless separately completed and evidenced. They must not be marked
 complete solely because operational RD1 checks pass.
+
+
+## Final history decision — 17 November 2026
+
+Retain existing history and evidence commit identifiers. ADR 002 records
+the final decision and the exception to the notebook's no-contract-text
+instruction. Historical rewrite discussion above records the earlier
+audit context; the current decision is to retain history.
