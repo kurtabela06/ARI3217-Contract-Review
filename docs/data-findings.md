@@ -1,29 +1,37 @@
 # RD1 data findings
 
-Measured on the CUAD baseline using scripts/check_data_quality.py.
-Exact counts are stored in evidence/data-quality-summary.csv.
+Measured on the CUAD baseline using `scripts/check_data_quality.py`.
+Exact counts are stored in `evidence/data-quality-summary.csv`.
 
-| Finding | Source | Measured result | Consequence | Safeguard / response |
+| Finding | Source / what the notebook says | Measured result | Consequence | Safeguard / response |
 |---|---|---|---|---|
-| Rare categories | Documented | 5 of 41 categories occur in fewer than 30 contracts | Overall averages can conceal weak and uncertain rare-category performance | Retain per-category results; report rare-category performance separately. Not a reason to reject otherwise valid input. |
-| Categories absent from contracts | Documented | 14,208 of 20,910 contract-category pairs have no annotation: 67.95% | Evaluation only on present categories overstates practical precision | Evaluation includes absent categories; tests/test_evaluation.py guards this behaviour. Use “not found in highlights”, not “absent”. |
-| Clauses cut across passages | Documented | 895 of 13,823 annotated spans have less than 90% coverage in any single passage: 6.47% | A relevant highlight may omit essential clause context | Pipeline rejects a cut share above 7%; tests/test_validation.py checks the boundary and failure cases. |
-| Exact duplicate annotations | Additional investigation | 0 excess rows with identical contract ID, category, start and end | Repeated annotation rows could distort annotation-level counts and coverage statistics | Inspection script records the count. No removal or deduplication was necessary. |
-| Invalid annotation offsets | Additional defensive check | 0 negative, reversed, empty or out-of-bounds spans | Incorrect positions could invalidate annotation matching and citations | Inspection script fails if invalid offsets are found. This offset check is not yet integrated into normal training. |
+| Rare categories | Section 1, quirk 3 / Section 4, Trap 2: five categories occur in fewer than 30 contracts | 5 of 41 categories occur in fewer than 30 contracts | Overall averages can conceal weak and uncertain rare-category performance | Retain per-category results and report rare-category performance separately. This is not a reason to reject otherwise valid input. |
+| Categories absent from contracts | Section 1, quirk 2 / Section 4, Trap 3: about 68% of question rows have no span | 14,208 of 20,910 contract-category pairs have no annotation: 67.95% | Evaluation only on present categories overstates practical precision | Evaluation includes absent categories; `tests/test_evaluation.py` guards this behaviour. Say “not found in highlights”, not “absent”. |
+| Clauses cut across passages | Section 4, Trap 4: sentence-like chunks cut about 6.5% of clauses under the 90%-coverage rule | 895 of 13,823 annotated spans have less than 90% coverage in any single passage: 6.47% | A relevant highlight may omit essential clause context | Pipeline rejects a cut share above 7%; `tests/test_validation.py` covers the 90%-coverage boundary, excessive cutting and invalid coverage. |
+| Exact duplicate annotations | Additional hypothesis: identical annotation rows could inflate counts; not one of the seven listed quirks | 0 excess rows with identical contract ID, category, start and end | Repeated annotation rows could distort annotation-level counts and coverage statistics | Inspection script records the count. No removal or deduplication was necessary. |
+| Invalid annotation offsets | Additional defensive check: negative, reversed, empty or out-of-bounds spans would invalidate positions | 0 invalid spans | Incorrect positions could invalidate annotation matching and citations | Inspection script fails on invalid offsets; this check is not yet integrated into normal training. |
 
 ## Interpretation
 
-Legitimate overlapping labels are not duplicates.
-Near-duplicate contracts are a separate documented issue handled through
+Three supplied issues were measured: rare categories, no-answer cases and
+clause cutting. The first two overlap the notebook's data-quirk and trap lists;
+clause cutting is Trap 4. This does not claim all seven quirks or all four traps
+have been completed.
+
+Exact duplicate annotations were one additional investigation; offset validation
+was an additional defensive check. Finding zero is a valid investigation result,
+not a discovered defect or dataset correction. Legitimate overlapping labels
+are not duplicates. Near-duplicate filings are a separate issue handled through
 contract-family grouping.
 
-No additional defect was found in the duplicate-annotation investigation.
-The result must not be presented as a correction to the dataset.
+The rare-category count uses fewer than 30 contracts. Earlier performance
+analysis used a separate tail definition, fewer than 60; do not mix thresholds.
 
-The rare-category count uses fewer than 30 contracts.
-The earlier performance analysis used a separate tail definition:
-fewer than 60 contracts. Those thresholds must not be confused.
+A later synthetic API check also exposed trailing-punctuation masking by the
+supplied email regex. This limitation is recorded in the README and checked by
+`scripts/check_review_api.py`. It is separate from the five counted rows above.
 
 ## Evidence reference
 
-Commit: e4da385
+Measurement checkpoint: commit `e4da385`. The same counted evidence is available
+in implementation snapshot `282cf23093d0d5cf9683987e991f2bfc2d6b7e34`.

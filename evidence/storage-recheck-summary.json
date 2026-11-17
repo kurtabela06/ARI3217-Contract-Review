@@ -1,0 +1,36 @@
+{
+  "started_at_utc": "2026-11-17T18:37:06.103593+00:00",
+  "image_reference": "contract-review:0.5",
+  "image_id": "sha256:ec124a7f37219f139450cac12cf0f1a4dea982d3437ffdc9667145e11940446a",
+  "scope": "Synthetic checks in isolated temporary containers and a disposable volume.",
+  "live_review_volume_mounted": false,
+  "checks": {
+    "successful_review_persisted_without_text": true,
+    "restart_preserves_all_records": true,
+    "replacement_preserves_all_records": true,
+    "replacement_can_save_new_review": true,
+    "unwritable_storage_returns_503": true
+  },
+  "model_version": "0.1.0:eef20dbe2aca",
+  "before_replacement": {
+    "review_count": 1,
+    "request_ids": [
+      "1c107e2479674c9980234a743feff6a0"
+    ],
+    "records_sha256": "6730717996da8bb0f6825ca90c26fe07e1c75b15f059661921476772174558d0",
+    "passage_text_excluded": true
+  },
+  "after_new_review": {
+    "review_count": 2,
+    "request_ids": [
+      "1c107e2479674c9980234a743feff6a0",
+      "a90268a56872486bbbfa4af0944c58f4"
+    ],
+    "records_sha256": "f8d013cf7323dc78c92378b72ba60c16f21eb33fb0649a1e75da405da0b200cf",
+    "passage_text_excluded": true
+  },
+  "cleanup_complete": true,
+  "cleanup_failures": [],
+  "completed_at_utc": "2026-11-17T18:37:21.068176+00:00",
+  "status": "passed"
+}
