@@ -30,6 +30,14 @@ IN_PROGRESS = Gauge(
     "POST /review requests currently being processed.",
 )
 
+INPUT_CHARACTERS = Histogram(
+    "contract_review_input_characters",
+    "Character length of nonblank validated review submissions.",
+    buckets=(
+        1000, 5000, 10000, 25000, 50000,
+        100000, 200000, 400000, 1000000,
+    ),
+)
 
 def install_monitoring(app):
     """Install single-process request instrumentation and metrics endpoint."""

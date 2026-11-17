@@ -3,7 +3,7 @@
   "title": "Contract Review \u2014 RD1 Operations",
   "description": "Operational availability, requests, errors and latency. These measurements do not establish extraction accuracy.",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "editable": false,
   "tags": [
     "RD1",
@@ -261,6 +261,55 @@
       "fieldConfig": {
         "defaults": {
           "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Submitted contract length \u2014 characters",
+      "description": "Rolling five-minute input-length distribution for nonblank validated submissions. p95 is a histogram estimate.",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "contract-prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(contract_review_input_characters_sum{job=\"contract-review\"}[5m])) / sum(rate(contract_review_input_characters_count{job=\"contract-review\"}[5m]))",
+          "legendFormat": "Mean characters",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "contract-prometheus"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(contract_review_input_characters_bucket{job=\"contract-review\"}[5m])))",
+          "legendFormat": "p95 characters",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "contract-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0
         },
         "overrides": []
       },

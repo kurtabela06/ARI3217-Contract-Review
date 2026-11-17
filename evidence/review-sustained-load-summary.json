@@ -1,0 +1,49 @@
+{
+  "completed_at_utc": "2026-11-17T17:50:47.668911+00:00",
+  "model_version": "0.1.0:eef20dbe2aca",
+  "dataset_sha256": "ed0b77d85bdf4014d7495800e8e4a70565b48ee6f8a2e5dca9cf8655dbf10eae",
+  "dataset_contracts": 510,
+  "selection": "40 evenly spaced ranks by complete-contract character length, including shortest and longest; shuffled with seed 42.",
+  "selected_input_characters": {
+    "minimum": 645,
+    "median": 33391.0,
+    "p95": 163466.04999999987,
+    "maximum": 338211
+  },
+  "warmup_requests_excluded": 3,
+  "unique_contract_inputs": 40,
+  "repetitions_per_input_per_phase": 50,
+  "client_python": "3.14.4",
+  "git_head": "2c4050ac546a5b490bdfa25d4a70117bb7136528",
+  "working_tree_dirty": true,
+  "timing_scope": "Client elapsed time from opening the HTTP request through receiving and parsing its response, including database saving.",
+  "limitations": "Local VM capacity test using 40 unique contracts repeated 50 times per phase. Not a production arrival-rate simulation or accuracy evaluation. Successful-request latency excludes failed requests; failures are reported separately. Client and services share the VM.",
+  "phases": {
+    "sequential": {
+      "requests": 2000,
+      "concurrency": 1,
+      "successful_requests": 2000,
+      "failed_requests": 0,
+      "wall_seconds": 75.69382635900001,
+      "successful_requests_per_second": 26.422234100234512,
+      "successful_latency_seconds": {
+        "p50": 0.029700123999646166,
+        "p95": 0.09609829179853475,
+        "maximum": 0.15065200299977732
+      }
+    },
+    "burst": {
+      "requests": 2000,
+      "concurrency": 2,
+      "successful_requests": 2000,
+      "failed_requests": 0,
+      "wall_seconds": 69.83047707200058,
+      "successful_requests_per_second": 28.640789578708542,
+      "successful_latency_seconds": {
+        "p50": 0.0626264379998247,
+        "p95": 0.1429221832494477,
+        "maximum": 0.2666058620015974
+      }
+    }
+  }
+}

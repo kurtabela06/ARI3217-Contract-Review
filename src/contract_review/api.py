@@ -9,7 +9,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from contract_review.monitoring import install_monitoring
+from contract_review.monitoring import INPUT_CHARACTERS, install_monitoring
 from contract_review.storage import save_review
 from contract_review.artifacts import load_bundle
 from contract_review.config import load_settings
@@ -47,6 +47,8 @@ def review(item: ReviewRequest):
             status_code=422,
             detail="Contract text must not be blank.",
         )
+
+    INPUT_CHARACTERS.observe(len(item.text))
 
     request_id = uuid.uuid4().hex
     scored = score_contract(item.text, bundle)

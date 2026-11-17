@@ -1,7 +1,7 @@
 {
   "health_status": 200,
   "review_status": 200,
-  "model_version": "0.1.0:c723f5ee677c",
+  "model_version": "0.1.0:eef20dbe2aca",
   "highlights_returned": 2,
   "citation_locations_match": true,
   "email_masking_verified": true,

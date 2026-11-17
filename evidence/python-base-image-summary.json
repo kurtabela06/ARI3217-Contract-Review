@@ -1,0 +1,9 @@
+{
+  "recorded_at_utc": "2026-11-17T17:37:53.420255+00:00",
+  "source_tag": "python:3.14-slim",
+  "pinned_reference": "python@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f",
+  "local_image_id": "sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f",
+  "architecture": "arm64",
+  "operating_system": "linux",
+  "python_version": "Python 3.14.10"
+}

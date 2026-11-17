@@ -95,7 +95,16 @@ def review(item, expected_version):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset")
+    parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--output-prefix", default="load")
     args = parser.parse_args()
+    if args.repeats < 1:
+        parser.error("--repeats must be positive")
+    if not args.output_prefix or any(
+        ch not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
+        for ch in args.output_prefix
+    ):
+        parser.error("Use letters, numbers, hyphens or underscores in --output-prefix")
 
     dataset = locate_dataset(args.dataset)
     raw_bytes = dataset.read_bytes()
@@ -136,20 +145,37 @@ def main():
     evidence = Path("evidence")
     evidence.mkdir(exist_ok=True)
     summaries = {}
+    workload = selected * args.repeats
+    if args.output_prefix != "load":
+        outputs = [
+            evidence / f"{args.output_prefix}-{name}-requests.csv"
+            for name in ["sequential", "burst"]
+        ] + [evidence / f"review-{args.output_prefix}-summary.json"]
+        if any(path.exists() for path in outputs):
+            raise FileExistsError(
+                "Output already exists. Choose another --output-prefix."
+            )
 
     for name, workers in [("sequential", 1), ("burst", 2)]:
         print(f"Starting {name}: concurrency={workers}", flush=True)
         started = time.perf_counter()
 
         with ThreadPoolExecutor(max_workers=workers) as executor:
-            rows = list(executor.map(
-                lambda item: review(item, version), selected
-            ))
+            rows = []
+            for number, row in enumerate(executor.map(
+                lambda item: review(item, version), workload
+            ), start=1):
+                rows.append(row)
+                if number % 100 == 0:
+                    print(
+                        f"{name}: {number}/{len(workload)} completed",
+                        flush=True,
+                    )
 
         wall_seconds = time.perf_counter() - started
         successful = [row["seconds"] for row in rows if row["ok"]]
 
-        with (evidence / f"load-{name}-requests.csv").open(
+        with (evidence / f"{args.output_prefix}-{name}-requests.csv").open(
             "w", newline="", encoding="utf-8"
         ) as handle:
             writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
@@ -194,6 +220,8 @@ def main():
             "maximum": max(lengths),
         },
         "warmup_requests_excluded": 3,
+        "unique_contract_inputs": len(selected),
+        "repetitions_per_input_per_phase": args.repeats,
         "client_python": platform.python_version(),
         "git_head": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], text=True
@@ -206,7 +234,8 @@ def main():
             "receiving and parsing its response, including database saving."
         ),
         "limitations": (
-            "Local VM capacity test with 40 inputs per phase. "
+            "Local VM capacity test using 40 unique contracts repeated "
+            f"{args.repeats} times per phase. "
             "Not a production arrival-rate simulation or accuracy evaluation. "
             "Successful-request latency excludes failed requests; failures "
             "are reported separately. Client and services share the VM."
@@ -214,7 +243,7 @@ def main():
         "phases": summaries,
     }
 
-    (evidence / "review-load-summary.json").write_text(
+    (evidence / f"review-{args.output_prefix}-summary.json").write_text(
         json.dumps(summary, indent=2) + "\n",
         encoding="utf-8",
     )

@@ -1,6 +1,6 @@
 services:
   api:
-    image: contract-review:0.3
+    image: contract-review:0.5
     ports:
       - "8888:8888"
     environment:

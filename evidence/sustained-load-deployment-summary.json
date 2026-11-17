@@ -1,0 +1,40 @@
+{
+  "recorded_at_utc": "2026-11-17T17:53:48.856560+00:00",
+  "model_version": "0.1.0:eef20dbe2aca",
+  "load_evidence": "evidence/review-sustained-load-summary.json",
+  "docker_available_cpus": 2,
+  "docker_available_memory_bytes": 5646544896,
+  "services": {
+    "api": {
+      "container_id": "ea3c08c05615affa2ebc8229c5dbd9a336165c60490c389dec53d0644f94c658",
+      "configured_image": "contract-review:0.5",
+      "image_id": "sha256:ec124a7f37219f139450cac12cf0f1a4dea982d3437ffdc9667145e11940446a",
+      "repo_digests": [
+        "contract-review@sha256:ec124a7f37219f139450cac12cf0f1a4dea982d3437ffdc9667145e11940446a"
+      ],
+      "architecture": "arm64",
+      "local_image_size_bytes": 328175166
+    },
+    "prometheus": {
+      "container_id": "aad2995158171cb52e1612a39b16f83fd473e4134ee7a47a5fba3eb425da2446",
+      "configured_image": "prom/prometheus@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06",
+      "image_id": "sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06",
+      "repo_digests": [
+        "prom/prometheus@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06"
+      ],
+      "architecture": "arm64",
+      "local_image_size_bytes": 106697246
+    },
+    "grafana": {
+      "container_id": "e84ab2c8791efbfdb21b8f950380444329fbfd128ecce72776963170db365809",
+      "configured_image": "grafana/grafana@sha256:0615ec4fbd4072004b7d86b46ded63013a74b7d6eb1119273dd89e8fa25c13cf",
+      "image_id": "sha256:0615ec4fbd4072004b7d86b46ded63013a74b7d6eb1119273dd89e8fa25c13cf",
+      "repo_digests": [
+        "grafana/grafana@sha256:0615ec4fbd4072004b7d86b46ded63013a74b7d6eb1119273dd89e8fa25c13cf"
+      ],
+      "architecture": "arm64",
+      "local_image_size_bytes": 465767950
+    }
+  },
+  "measurement_context": "Load generator, API, Prometheus and Grafana share the Ubuntu VM."
+}
