@@ -3,7 +3,7 @@
   "title": "Contract Review \u2014 RD1 Operations",
   "description": "Operational availability, requests, errors and latency. These measurements do not establish extraction accuracy.",
   "schemaVersion": 39,
-  "version": 2,
+  "version": 3,
   "editable": false,
   "tags": [
     "RD1",
@@ -19,7 +19,7 @@
     {
       "id": 1,
       "title": "API scrape available: 1 = up",
-      "description": "",
+      "description": "Prometheus scrape success only; not extraction quality or database write readiness.",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -44,7 +44,23 @@
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -61,7 +77,7 @@
     {
       "id": 2,
       "title": "Successful reviews since API start",
-      "description": "",
+      "description": "Cumulative successful responses since this API process started. Green is a presentation choice, not an accuracy assessment.",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -86,7 +102,11 @@
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
         },
         "overrides": []
       },
@@ -103,7 +123,7 @@
     {
       "id": 3,
       "title": "4xx responses since API start",
-      "description": "",
+      "description": "Client/input rejections, including intentional HTTP 422 test cases.",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -128,7 +148,11 @@
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
         },
         "overrides": []
       },
@@ -145,7 +169,7 @@
     {
       "id": 4,
       "title": "5xx responses since API start",
-      "description": "",
+      "description": "Server failures recorded by the API; check scrape availability alongside this count.",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -170,7 +194,23 @@
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
         },
         "overrides": []
       },

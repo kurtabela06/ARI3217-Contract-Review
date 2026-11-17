@@ -30,11 +30,17 @@ Check the exact submission time on the VLE.
 - [X] Training and serving preprocessing consistency checked.
 
 ## Monitoring and performance
-- [X] Every prediction/review logged with model version.
-- [X] Request count, latency and one input feature exposed.
-- [X] Realistic workload documented and executed.
+- [X] Successful review requests persisted with request ID, UTC timestamp and model version; invalid requests are not successful review records.
+- [X] Request count, latency and contract-character length exposed; validated input-feature check recorded.
+- [X] Complete-contract workload documented and executed: 40 unique inputs repeated 50 times per phase, concurrency 1/2; controlled-capacity limitations stated.
 - [X] p95 latency or batch throughput recorded.
-- [X] Dashboard evidence captured.
+- [X] Dashboard evidence captured, including the input-feature panel and historical benchmark window.
+
+## Audit follow-up
+- [X] Python base image pinned by digest.
+- [X] Current deployment and measured results indexed in documentation.
+- [X] Reusable Docker storage recheck passed on Ubuntu; result recorded separately from historical manual checks.
+- [ ] Historical supplied notebook excerpts reviewed and history policy resolved.
 
 ## Architecture and reasoning
 - [ ] Four-layer enterprise architecture diagram.

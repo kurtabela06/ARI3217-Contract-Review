@@ -1,6 +1,7 @@
 # ADR 001 — Baseline and supplementary temporal evaluation
 
-Status: accepted plan; experiments not yet run.
+Status: accepted; primary reproduction and supplementary experiment completed.
+Status updated on 17 November 2026; dated experimental decisions below retained.
 
 ## Context
 
@@ -45,10 +46,15 @@ and limitation rather than claim successful temporal validation.
 Replacing the primary split prevents direct baseline reproduction.
 Ignoring time-based evaluation leaves the diary instruction unaddressed.
 
-## Evidence pending
+## Recorded evidence
 
-Year coverage, exclusion counts, partition counts, category support,
-metrics, runtime and commit references.
+Year coverage and partition feasibility are in
+`evidence/temporal-year-counts.csv` and
+`evidence/temporal-feasibility-summary.csv`. Category support, evaluation
+metrics and timing are in `evidence/temporal-category-support.csv` and
+`evidence/temporal-evaluation-summary.json`. The summary records source commit
+`0f374aaf9fae71d2acada3dcce5453b5b8c7a602`. See `docs/evidence-index.md`.
+This ADR records the project decision; it does not claim lecturer confirmation.
 
 ## Temporal feasibility decision — 12 November 2026
 
