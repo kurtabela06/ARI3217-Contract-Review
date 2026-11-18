@@ -47,7 +47,7 @@ Check the exact submission time on the VLE.
 - [ ] Chosen capability pattern compared against one alternative.
 - [ ] Comparison includes latency, daily cost, ownership and failure.
 - [ ] AI Act tier, provision, provider and deployer stated.
-- [ ] At least three reflection prompts addressed.
+- [x] At least three reflection prompts addressed.
 - [ ] Every reported measurement traces to a commit.
 - [ ] AI assistance disclosed.
 
