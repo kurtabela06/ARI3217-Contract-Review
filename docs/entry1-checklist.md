@@ -49,7 +49,7 @@ Check the exact submission time on the VLE.
 - [ ] AI Act tier, provision, provider and deployer stated.
 - [x] At least three reflection prompts addressed.
 - [ ] Every reported measurement traces to a commit.
-- [ ] AI assistance disclosed.
+- [x] AI assistance disclosed.
 
 ## Submission
 - [ ] Written PDF: 400–600 words, excluding permitted supporting material.

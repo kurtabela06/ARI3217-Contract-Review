@@ -1,0 +1,3 @@
+# RD1 AI-use disclosure
+
+I used ChatGPT throughout the project, including GPT-6.1 Sol at different reasoning-effort settings. It helped me write and troubleshoot code and commands, package the contract-review prototype, and collect verification and benchmark evidence. I also used it to review repository documentation, create the architecture diagram, check the relevant EU AI Act provisions, and draft the reflection from my own answers. I ran the project checks and benchmarks in Ubuntu, reviewed the outputs, and approved the final reflection. The reported measurements come from those recorded project runs.
