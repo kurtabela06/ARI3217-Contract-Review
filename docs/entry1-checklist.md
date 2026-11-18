@@ -43,7 +43,7 @@ Check the exact submission time on the VLE.
 - [X] Historical supplied outputs reviewed; final retention decision recorded in ADR 002.
 
 ## Architecture and reasoning
-- [ ] Four-layer enterprise architecture diagram.
+- [x] Four-layer enterprise architecture diagram.
 - [ ] Chosen capability pattern compared against one alternative.
 - [ ] Comparison includes latency, daily cost, ownership and failure.
 - [ ] AI Act tier, provision, provider and deployer stated.

@@ -1,5 +1,7 @@
 # RD1 — Four-layer enterprise architecture
 
+![Four-layer enterprise architecture](images/contract-review-architecture.png)
+
 ## Scope
 
 This is a local prototype of an online, human-in-the-loop contract-review
