@@ -59,7 +59,7 @@ flowchart TB
     Train -->|"saves"| Bundle
     API -->|"loads at startup"| Bundle
     API -->|"commits before success"| Records
-    API -->|"metrics scraped by Prometheus"| Metrics
+    API -->|"API metrics collected by Prometheus"| Metrics
     Dashboard -->|"queries through Prometheus"| Metrics
 
     API -->|"runs on"| Runtime
