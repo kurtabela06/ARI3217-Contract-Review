@@ -1,7 +1,7 @@
 # RD1 data findings
 
-Measured on the CUAD baseline using `scripts/check_data_quality.py`.
-Exact counts are stored in `evidence/data-quality-summary.csv`.
+The [data quality script](../scripts/check_data_quality.py) measured the
+[recorded counts](../evidence/data-quality-summary.csv) on the CUAD baseline.
 
 | Finding | Source / what the notebook says | Measured result | Consequence | Safeguard / response |
 |---|---|---|---|---|
@@ -33,5 +33,5 @@ supplied email regex. This limitation is recorded in the README and checked by
 
 ## Evidence reference
 
-Measurement checkpoint: commit `e4da385`. The same counted evidence is available
-in implementation snapshot `282cf23093d0d5cf9683987e991f2bfc2d6b7e34`.
+[Measured counts at `e4da385`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/e4da385ad3ba487656aa9df156e40b23555d91a2/evidence/data-quality-summary.csv).
+The [evidence index](evidence-index.md) links these counts to the other RD1 results.

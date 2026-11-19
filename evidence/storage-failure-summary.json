@@ -1,7 +1,0 @@
-{
-  "model_version": "0.1.0:862914c0760f",
-  "failure_condition": "Database path placed beneath /dev/null, which is a file.",
-  "review_status": 503,
-  "expected_error_verified": true,
-  "scope": "Tests an invalid storage path; does not simulate disk exhaustion or concurrent database contention."
-}

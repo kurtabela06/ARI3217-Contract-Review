@@ -21,60 +21,12 @@ through scripts, curl and interactive API documentation.
 | Data | CUAD supplies training/evaluation text and annotations. The fitted bundle contains vocabulary, weighting, classifiers, calibration, knowledge-query vectors and review settings. SQLite records request IDs, timestamps, model versions, passage locations and scores. Prometheus retains metric history. |
 | Technology | Docker Compose runs the API, Prometheus and Grafana on the Ubuntu VM. Uvicorn serves one API process. SQLite writes to a named external Docker volume. Prometheus and Grafana have separate persistent volumes. The measured deployment is Linux/arm64 with two CPUs and approximately 5.26 GiB available to Docker. |
 
-## Architecture diagram
+## Deployment details
 
-Solid arrows describe implemented relationships. The dotted arrow marks
-the intended intake integration.
-
-```mermaid
-flowchart TB
-    subgraph B["Business"]
-        Lawyer["Lawyer: review and decision"]
-    end
-
-    subgraph A["Application"]
-        Intake["Intake / CLM: planned"]
-        API["Review API and package"]
-        Train["Offline training command"]
-        Dashboard["Grafana dashboard"]
-    end
-
-    subgraph D["Data"]
-        Dataset["CUAD inputs and annotations"]
-        Bundle["Fitted serving bundle"]
-        Records["Minimised review records"]
-        Metrics["Operational metric history"]
-    end
-
-    subgraph T["Technology"]
-        Runtime["Ubuntu VM and Docker containers"]
-        Volumes["Persistent Docker volumes"]
-    end
-
-    Lawyer -->|"submits contract"| API
-    API -->|"returns cited highlights"| Lawyer
-    Intake -.->|"intended integration"| API
-
-    Train -->|"reads"| Dataset
-    Train -->|"saves"| Bundle
-    API -->|"loads at startup"| Bundle
-    API -->|"commits before success"| Records
-    API -->|"API metrics collected by Prometheus"| Metrics
-    Dashboard -->|"queries through Prometheus"| Metrics
-
-    API -->|"runs on"| Runtime
-    Dashboard -->|"runs on"| Runtime
-    Records -->|"persisted in"| Volumes
-    Metrics -->|"persisted in"| Volumes
-```
-
-The runtime also hosts Prometheus. Its collection/query functions are
-represented by the metrics relationships; metric history is the data-layer
-asset. Grafana's own configuration also persists in a separate volume.
-
-The serving bundle is retained inside the built API image. It is not stored
-in the review-records volume. Training inputs are removed from the final
-training build layer after the bundle is saved.
+The dotted connection in the diagram marks the planned intake integration.
+Prometheus scrapes the API, and Grafana queries Prometheus. The serving bundle
+is packaged inside the API image. The review database, metric history and
+Grafana configuration use separate Docker volumes.
 
 ## Request and decision responsibilities
 
@@ -108,15 +60,7 @@ by the current dashboard.
 
 ## Evidence
 
-Implementation and extended-workload checkpoint:
-282cf23093d0d5cf9683987e991f2bfc2d6b7e34.
-
-- compose.monitoring.yaml and compose.grafana.yaml
-- evidence/sustained-load-deployment-summary.json
-- evidence/review-sustained-load-summary.json
-- evidence/storage-recheck-summary.json
-- evidence/baseline-operating-point-results.csv
-- docs/evidence-index.md
-
-This architecture describes the current prototype and clearly labels the
-intended integration. It does not claim a production deployment.
+- [Rendered diagram at `270f0f1`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/270f0f16515ae9e1b41963e5fa2857322b02a09e/docs/images/contract-review-architecture.png).
+- [Measured deployment at `282cf23`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/282cf23093d0d5cf9683987e991f2bfc2d6b7e34/evidence/sustained-load-deployment-summary.json), [storage recheck at `22152bf`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/22152bfae9ee2537a2c6c967f3b9e8347f861451/evidence/storage-recheck-summary.json).
+- [Recall at 20 passages at `eb7b2f3`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/eb7b2f3f4992fdf95209a5cbd4bd96833b3e4e7e/evidence/baseline-operating-point-results.csv).
+- [Compose configuration](../compose.monitoring.yaml), [Grafana configuration](../compose.grafana.yaml), [full evidence index](evidence-index.md).

@@ -48,13 +48,13 @@ Ignoring time-based evaluation leaves the diary instruction unaddressed.
 
 ## Recorded evidence
 
-Year coverage and partition feasibility are in
-`evidence/temporal-year-counts.csv` and
-`evidence/temporal-feasibility-summary.csv`. Category support, evaluation
-metrics and timing are in `evidence/temporal-category-support.csv` and
-`evidence/temporal-evaluation-summary.json`. The summary records source commit
-`0f374aaf9fae71d2acada3dcce5453b5b8c7a602`. See `docs/evidence-index.md`.
-This ADR records the project decision; it does not claim lecturer confirmation.
+The [feasibility check at `d1aadf7`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/d1aadf7d049aadeeae5471873ac5b954d98abb0b/evidence/temporal-feasibility-summary.csv)
+recorded the split before performance was measured. See the
+[year counts](../../evidence/temporal-year-counts.csv),
+[category support](../../evidence/temporal-category-support.csv) and
+[evaluation at `1749ba1`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/1749ba1581bb30fb630ec42264583114536911e8/evidence/temporal-evaluation-summary.json).
+The evaluation summary records `0f374aaf9fae71d2acada3dcce5453b5b8c7a602`
+as the source checkout.
 
 ## Temporal feasibility decision — 12 November 2026
 
@@ -89,4 +89,4 @@ protocol. It does not prove that time caused the difference from the
 primary baseline, because the evaluated populations differ.
 
 The primary baseline and saved serving bundle remain unchanged.
-Detailed evidence: evidence/temporal-evaluation-summary.json.
+See the [temporal summary](../../evidence/temporal-evaluation-summary.json).

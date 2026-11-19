@@ -1,38 +1,28 @@
 # RD1 capability-pattern comparison
 
-The implemented pattern is online, human-in-the-loop review. A lawyer submits
-a contract and receives cited highlights in the same session. The alternative
-is a proposed daily batch that uses the same extractor and review budget, then
-makes the results available to lawyers after the scheduled run.
+The prototype serves online predictions for lawyer review. The on-demand batch
+benchmark sent the same inputs through the same API and published all packs as
+one file at the end of the job.
 
-| Criterion | Online review | Scheduled batch review |
+| Criterion | Online review | On-demand batch test |
 |---|---|---|
-| Latency budget | Proposed target: client p95 of 1 second for a successful API response. Measured p95 was 96.10 ms sequentially and 142.92 ms at concurrency two, with zero failures across 4,000 requests in the extended local test. | Proposed target: results ready within 24 hours and 15 minutes of submission at p95. A document submitted just after cutoff can wait nearly 24 hours before the next run begins. Batch turnaround has yet to be measured. |
-| Estimated compute cost per calendar day | At an illustrative €0.05 per VM-hour, 24-hour availability costs €1.20/day. | At the same rate, a VM billed for 15 minutes per daily run costs about €0.013/day in compute. Budget separately for durable intake, storage and monitoring. |
-| Decision ownership | The lawyer uses the highlights alongside the original contract and decides how to proceed. Legal operations sets review policy. | The same roles apply. The schedule determines when the results are ready. |
-| Failure handling | A failed database write returns HTTP 503. The operator investigates, and the lawyer can proceed with manual review if the matter is time-sensitive. | The proposed batch design would retain failed jobs for retry, alert the operator after a missed run and route time-sensitive contracts to manual review. |
+| Latency and throughput | 130.81 ms client p95. The phase took 63.74 s at 31.38 successful reviews/s. Each pack was available as its response arrived, supporting same-session review. | All packs were published together in 63.69 s at 31.40 successful reviews/s. A daily schedule would add the time between intake and job start. |
+| Daily running cost | Unmeasured. | Unmeasured. |
+| Decision ownership | The lawyer checks the cited highlights against the agreement and decides how to proceed. | The lawyer makes the same decision after batch publication. |
+| Failure handling | 0 failures in 2,000 requests. A database write failure returns HTTP 503. The operator investigates and the lawyer can review manually. | 0 failures in 2,000 requests. The runner records failed items for operators to review. A daily schedule and automatic retries were outside the benchmark. |
 
-The compute comparison assumes an always-on VM for online service and a VM
-billed only during the batch window, including startup. It excludes shared
-storage, monitoring, support and lawyer time. The notebook estimates
-30 minutes of lawyer time per contract at a 20-passage budget and about
-€4,000/month at 40 contracts per month. Both patterns use the same budget,
-so this comparison credits neither with a labour saving.
+Both modes repeated the same 40 CUAD inputs 50 times with two workers and the
+same fitted bundle, `0.1.0:eef20dbe2aca`. The phases shared a VM with the client.
+The batch timing includes writing and publishing the local JSONL file. The
+benchmark excludes three warm-up requests, API startup and scheduled queue time.
+The two phases had similar throughput in this run.
 
-## Recommendation and switch criterion
+## Decision
 
-Keep online review while lawyers need highlights in the same session. The
-measured 142.92 ms p95 at concurrency two fits the proposed 1-second API
-budget under the tested VM conditions.
+Keep the API for same-session review. I would test tiered delivery if realistic
+peak demand pushed online p95 above the measured 130.81 ms reference and delayed
+same-session work. I would switch non-urgent overflow to batch delivery only if
+the trial restored priority API latency and the queued packs met the agreed
+submission-to-ready deadline. That deadline would include the schedule wait.
 
-Switch the non-urgent workload to daily batch if legal operations accepts
-next-run turnaround and a pilot measures submission-to-ready p95 at or below
-24 hours and 15 minutes, with lower total daily operating cost after accounting
-for intake, storage, monitoring and retries. Keep the online route for
-same-session requests.
-
-## Evidence
-
-- [Extended local workload](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/282cf23093d0d5cf9683987e991f2bfc2d6b7e34/evidence/review-sustained-load-summary.json)
-- [Operating point and lawyer-time estimate](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/282cf23093d0d5cf9683987e991f2bfc2d6b7e34/evidence/baseline-operating-point-results.csv)
-- [Storage failure recheck](../evidence/storage-recheck-summary.json)
+[Matched benchmark and runner](evidence-index.md#matched-online-and-batch-test)

@@ -4,12 +4,11 @@ Status: implemented choice; rationale documented on 17 November 2026.
 
 ## Context
 
-RD1 requires logging predictions with model versions and locating the database
-in the architecture. The repository's reference workflow proposes PostgreSQL.
-The implemented service instead uses SQLite; the general reflective-diary
-instructions do not name a required database engine. This ADR records that
-workflow deviation explicitly. A more specific VLE or lecturer requirement for
-PostgreSQL would need to be satisfied or clarified separately.
+The RD1 diary guidelines require prediction logging with model versions and an
+architecture that identifies the database. Stage 10 of the
+[archived workflow](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/7bcddbdf02cf0c5497c619929cbeed0d2dd5675d/ARI3217%20-%20Reflective%20Diary%20Entry%201%20Workflow.pdf)
+specifies PostgreSQL. SQLite is the documented implementation choice for the
+single-VM prototype.
 
 ## Decision and rationale
 
@@ -44,18 +43,11 @@ manually deleted; deleting the named volume deletes its history.
 
 ## Evidence and verification
 
-Historical evidence:
-- `evidence/storage-failure-summary.json`: invalid path produces HTTP 503.
-- `evidence/storage-replacement-summary.json`: record count and fingerprint match
-  before and after replacement.
-- `evidence/storage-api-smoke-test-summary.json`: replacement serves reviews.
+The [storage unit tests](../../tests/test_storage.py) check minimisation,
+UTC and model traceability, parent-path failure and duplicate-ID protection.
+The [Docker recheck](../../scripts/check_storage.py) exercises restart,
+replacement, another write after replacement and HTTP 503 on failed storage.
+It uses disposable containers and a disposable volume.
 
-The source for these records is preserved in snapshot
-`282cf23093d0d5cf9683987e991f2bfc2d6b7e34`. The extended image-0.5 benchmark is a
-separate workload, with its own model version and deployment evidence.
-
-`tests/test_storage.py` checks minimisation, UTC/model traceability, parent-path
-failure and duplicate-ID protection without a model. `scripts/check_storage.py`
-replays persistence/restart/replacement/failure scenarios on disposable Docker
-resources. Its Docker recheck passed on Ubuntu on 17 November 2026, recorded in
-`evidence/storage-recheck-summary.json`. Historical results remain separate.
+- [Image-0.5 recheck at `22152bf`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/22152bfae9ee2537a2c6c967f3b9e8347f861451/evidence/storage-recheck-summary.json), run on 17 November 2026.
+- [Earlier replacement evidence at `50d3227`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/50d3227377e08608b4ebf0b9981f47cd9cc4d4f1/evidence/storage-replacement-summary.json) and [earlier write failure](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/50d3227377e08608b4ebf0b9981f47cd9cc4d4f1/evidence/storage-failure-summary.json).

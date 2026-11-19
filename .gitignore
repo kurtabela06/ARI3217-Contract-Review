@@ -19,3 +19,7 @@ kaggle.json
 *.sqlite3-journal
 *.sqlite3-wal
 *.sqlite3-shm
+
+# Local batch review packs can contain contract excerpts
+batch-review-packs.jsonl
+batch-review-packs.partial

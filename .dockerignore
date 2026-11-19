@@ -22,3 +22,7 @@ var
 *.sqlite3-journal
 *.sqlite3-wal
 *.sqlite3-shm
+
+submission/
+**/batch-review-packs.jsonl
+**/batch-review-packs.partial

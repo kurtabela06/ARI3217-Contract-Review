@@ -1,9 +1,0 @@
-{
-  "image_tag": "contract-review:0.1",
-  "image_id": "sha256:5d45d3dfc201cf112a87e08be28f154701a006d7b486f04ccd8788eef1d74451",
-  "architecture": "arm64",
-  "operating_system": "linux",
-  "size_bytes": 328165480,
-  "size_mib": 312.96,
-  "size_scope": "Local uncompressed Docker image size."
-}

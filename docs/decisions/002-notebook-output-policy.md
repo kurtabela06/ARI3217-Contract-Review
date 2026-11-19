@@ -1,40 +1,19 @@
 # ADR 002 — Notebook outputs and history retention
 
-Status: accepted and final.
-Decision recorded: 17 November 2026.
+Status: accepted and final. Decision recorded 17 November 2026.
 
-## Decision
+Retain existing Git history, including the supplied worked notebook outputs,
+to preserve the starting point and evidence commit identifiers. The notebook’s
+Section 10 asks that contract text be excluded from commits. The historical
+supplied example passages are a documented exception under this decision.
+They are distinct from the student’s recorded baseline measurements.
 
-Retain the existing Git history, including historical supplied notebook
-outputs, to preserve provenance and the commit identifiers referenced by
-the project's evidence. No history rewrite is planned.
+- [Initial notebook with supplied worked outputs at `7f27e29`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/7f27e29a427c909517b0fd319efd1a7c2084b86d/29_contract_review.ipynb).
+- [Cleared reference notebook at `10cc10a`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/10cc10ad543143bf383344d62280b62a816d254c/29_contract_review.ipynb), used as the source for the baseline.
+- [Student baseline evidence at `eb7b2f3`](https://github.com/kurtabela06/ARI3217-Contract-Review/tree/eb7b2f3f4992fdf95209a5cbd4bd96833b3e4e7e/evidence).
 
-## Rationale and scope
-
-The initial notebook upload contained supplied worked outputs, including
-example contract passages. Keeping that historical reference documents
-the starting point from which the model was reproduced and packaged.
-
-Running the baseline can produce contract excerpts in notebook outputs.
-Saving and committing outputs is a separate action. The initial supplied
-examples must not be presented as newly measured student results.
-
-The notebook's Section 10 includes “no data or contract text committed”.
-Retaining the historical examples is a deliberate, documented exception
-to that instruction. This decision does not assert that Git history
-contains no contract text.
-
-## Policy for subsequent work
-
-Keep the tracked notebook's outputs and execution counts cleared before
-committing. Preserve the supplied code and Markdown.
-
-Run:
-python scripts/clear_notebook_outputs.py
-
-Keep the byte-for-byte reference backup under Git-ignored data/reference.
-Exclude newly generated contract passages, raw/processed datasets,
-credentials and trained artifacts from commits. Store reviewed aggregate
-measurements and figures separately with source and environment references.
-
-Historical outputs remain unchanged; current notebook outputs are cleared.
+The live repository keeps the [thin package client](../../notebooks/contract_review.ipynb).
+Clear outputs and execution counts before committing notebook changes. Keep
+raw and processed datasets, generated contract excerpts, fitted bundles,
+credentials and batch pack files local. Commit measurement summaries and
+reviewed figures with their source references.
