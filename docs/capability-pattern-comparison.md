@@ -7,7 +7,7 @@ one file at the end of the job.
 | Criterion | Online review | On-demand batch test |
 |---|---|---|
 | Latency and throughput | 130.81 ms client p95. The phase took 63.74 s at 31.38 successful reviews/s. Each pack was available as its response arrived, supporting same-session review. | All packs were published together in 63.69 s at 31.40 successful reviews/s. A daily schedule would add the time between intake and job start. |
-| Daily running cost | Unmeasured. | Unmeasured. |
+| Daily compute cost (estimate) | US$0.696/day for a VM running 24 hours. | About US$0.00052/day for one timed batch, before startup and shutdown. |
 | Decision ownership | The lawyer checks the cited highlights against the agreement and decides how to proceed. | The lawyer makes the same decision after batch publication. |
 | Failure handling | 0 failures in 2,000 requests. A database write failure returns HTTP 503. The operator investigates and the lawyer can review manually. | 0 failures in 2,000 requests. The runner records failed items for operators to review. A daily schedule and automatic retries were outside the benchmark. |
 
@@ -16,6 +16,21 @@ same fitted bundle, `0.1.0:eef20dbe2aca`. The phases shared a VM with the client
 The batch timing includes writing and publishing the local JSONL file. The
 benchmark excludes three warm-up requests, API startup and scheduled queue time.
 The two phases had similar throughput in this run.
+
+## Daily compute estimate
+
+The scenario uses an Oracle Ampere A1 Flex VM with 2 OCPUs and 6 GB. At the
+paid list rates of US$0.010 per OCPU-hour and US$0.0015 per GB-hour, the
+hourly compute cost is US$0.029.
+[Oracle Ampere A1 rates](https://www.oracle.com/cloud/compute/arm/)
+
+The online estimate multiplies that rate by 24 hours. The batch estimate
+uses one 63.69-second run per day rounded up to 64 billable seconds.
+It assumes the same processing time and a VM stopped between jobs.
+Startup, shutdown, storage, networking, taxes and free allowances are outside
+the estimate.
+[Per-second VM billing](https://docs.oracle.com/en-us/iaas/releasenotes/changes/20facdce-34bf-4648-a0a7-de5db73657ce/) ·
+[Billing for stopped VMs](https://docs.oracle.com/en-us/iaas/Content/Compute/Tasks/resource-billing-stopped-instances.htm)
 
 ## Decision
 

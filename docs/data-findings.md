@@ -27,9 +27,10 @@ contract-family grouping.
 The rare-category count uses fewer than 30 contracts. Earlier performance
 analysis used a separate tail definition, fewer than 60; do not mix thresholds.
 
-A later synthetic API check also exposed trailing-punctuation masking by the
-supplied email regex. This limitation is recorded in the README and checked by
-`scripts/check_review_api.py`. It is separate from the five counted rows above.
+The synthetic API check also covered an email address whose trailing full stop
+was included in the mask. The test checks the returned excerpts against the
+expected masked text and verifies the citation offsets.
+[API smoke test at `282cf23`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/282cf23093d0d5cf9683987e991f2bfc2d6b7e34/scripts/check_review_api.py)
 
 ## Evidence reference
 

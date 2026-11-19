@@ -39,6 +39,9 @@ package. Settings are in [config.yaml](config/config.yaml) and
 in [env.example](env.example) and [the configuration loader](src/contract_review/config.py).
 
 The packaged and fresh-copy combined test macro AUPR both measured 0.499002.
+The original Part B classifier fit was 5 s, rounded by the notebook.
+[Part B timing evidence at `ad91069`](https://github.com/kurtabela06/ARI3217-Contract-Review/blob/ad910690fb9baa6878e4af21b873f85c052df950/evidence/notebook-part-b-fit-timing.json)
+
 The grouped baseline preserves contract families and the franchise holdout.
 The forward-time experiment trains on filings before 2010, validates on
 2010–2014 and tests on 2015 onward under a separate [evaluation protocol](docs/decisions/001-evaluation-protocol.md).
@@ -140,9 +143,12 @@ cat "$batch_run/review-batch-summary.json"
 The [18 November summary](evidence/review-batch-summary.json) records 2,000
 successful reviews per mode. Online client p95 was 130.81 ms and the online
 phase finished in 63.74 s. The on-demand batch published the packs in 63.69 s.
-The batch ran against the same API, and daily schedule wait and running cost
-are unmeasured. The results file can contain contract excerpts, so keep it local
-and share the metadata-only summary.
+The batch ran against the same API. Daily schedule wait is unmeasured. The
+[capability-pattern comparison](docs/capability-pattern-comparison.md#daily-compute-estimate)
+prices a full day of online compute and one timed batch at published VM rates.
+
+The batch results file can contain contract excerpts. Keep it local and share
+the metadata-only summary.
 
 ## Submission evidence
 
