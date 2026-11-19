@@ -1,0 +1,27 @@
+{
+  "run_date": "2026-11-10",
+  "scope": "Student interactive run of supplied Part B classifier cell. The cell rounds elapsed fit time to whole seconds. This is the time of the timed classifier fit, separate from the full notebook and packaged training command.",
+  "observed_fit_seconds": 5,
+  "precision": "Whole seconds as displayed by the original notebook.",
+  "classifier_count": 41,
+  "training_chunks": 20676,
+  "features": 94546,
+  "stdout": "41 linear SVMs on 20,676 training chunks (94,546 features) in 5s",
+  "notebook_source": {
+    "path": "29_contract_review.ipynb",
+    "commit": "10cc10ad543143bf383344d62280b62a816d254c",
+    "notebook_sha256": "a741f97be74fbd933a2c0af7cbd06fc5185f2516910f4d7274646158b16a9c6f",
+    "cell_id": "d769f49c",
+    "timed_call": "fit_linear(X_text, M[\"train\"])"
+  },
+  "baseline_context": {
+    "path": "evidence/baseline-run-metadata.json",
+    "commit": "eb7b2f3f4992fdf95209a5cbd4bd96833b3e4e7e"
+  },
+  "capture": {
+    "original_filename": "Screen Shot 2026-11-10 at 17.01.31 PM.png",
+    "original_sha256": "cc4456a6d6f0fe0962c5dee976a1a0b2484673a1005b0cc024095c19055b226b",
+    "stdout_crop_path": "evidence/notebook-part-b-fit-stdout.png",
+    "stdout_crop_sha256": "1e2d3d7e5da3675bea575a59dfce0dad97079f466d4d6f48479cea7ef6ff5a0c"
+  }
+}
